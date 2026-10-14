@@ -17,6 +17,7 @@ canvas{position:fixed;inset:0;width:100%;height:100%;display:block}
 #hint{position:fixed;left:50%;bottom:3.2vh;transform:translateX(-50%);color:#fff6ee;font-size:12px;letter-spacing:.32em;opacity:.55;transition:opacity 1s,color 1s;text-shadow:0 0 8px rgba(40,24,40,.5);z-index:3}
 #hint.tie{opacity:1;color:#ffd2cc;animation:br 2s ease-in-out infinite}
 #act,#hint,#sub{pointer-events:none}
+#fail{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;text-align:center;line-height:2;color:#3d4247;background:#efe9dc;font-family:serif;letter-spacing:.12em;z-index:20;padding:8vw}#fail small{color:#999;letter-spacing:0}
 body:not(.started) #sub,body:not(.started) #act,body:not(.started) #hint{opacity:0!important}
 #end{position:fixed;inset:0;z-index:20;display:none;flex-direction:column;align-items:center;justify-content:center;background:radial-gradient(#f4eedf,#e1d6bd);color:#2b2a26;opacity:0;transition:opacity 2.5s}
 #endtxt{writing-mode:vertical-rl;font-size:clamp(18px,2.6vw,28px);letter-spacing:.32em;line-height:2.5;height:52vh}
@@ -47,7 +48,14 @@ function prog(fs) {
   const u = {}; const n = gl.getProgramParameter(p, gl.ACTIVE_UNIFORMS); for (let i = 0; i < n; i++) { const a = gl.getActiveUniform(p, i), nm = a.name.replace('[0]', ''); u[nm] = gl.getUniformLocation(p, a.name); }
   return { p, u };
 }
-const P = { scene: prog(SHADERS.scene), post: prog(SHADERS.post), bright: prog(SHADERS.bright), down: prog(SHADERS.down), up: prog(SHADERS.up) };
+// 显卡出错时不要静默黑屏：说明原因，并自动降画质重进
+function fail(msg) { const d = document.createElement('div'); d.id = 'fail'; d.innerHTML = msg; document.body.appendChild(d); }
+let LITE = qs.has('lite'); const LOSTN = +(qs.get('lost') || 0);
+cv.addEventListener('webglcontextlost', (e) => { e.preventDefault(); if (STILL) return;
+  if (LOSTN >= 2) { fail('这台设备的显卡暂时跑不动这幅画。<br>建议用电脑上的 Chrome / Edge 打开，并接上电源。'); return; }
+  const q = new URLSearchParams(location.search); q.set('lite', ''); q.set('lost', LOSTN + 1); if (started) { q.set('go', ''); q.set('t', story.toFixed(1)); } q.delete('s');
+  location.replace(location.pathname + '?' + q.toString().replace(/=(&|$)/g, '$1')); });
+let P; try { P = { scene: prog(SHADERS.scene), post: prog(SHADERS.post), bright: prog(SHADERS.bright), down: prog(SHADERS.down), up: prog(SHADERS.up) }; } catch (e) { console.error(e); fail('画面没能启动（着色器编译失败）。<br>请换用电脑上最新版的 Chrome / Edge。<br><small>' + String(e.message || e).slice(0, 160).replace(/</g, '&lt;') + '</small>'); throw e; }
 gl.bindBuffer(gl.ARRAY_BUFFER, gl.createBuffer()); gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1, -1, 3, -1, -1, 3]), gl.STATIC_DRAW);
 gl.enableVertexAttribArray(0); gl.vertexAttribPointer(0, 2, gl.FLOAT, false, 0, 0);
 function target(w, h) {
@@ -151,7 +159,7 @@ const RIB = [365, 318, 268, 222, 178].map((z) => ({ p: V(rx(z) - 4.3, -0.15, z),
 let tiedN = 0;
 if (qs.get('tied')) { tiedN = +qs.get('tied'); RIB.forEach((r, i) => { if (i < tiedN) { r.tied = 1; r.w = 1; } }); }
 // ---------- 状态 ----------
-let story = +(qs.get('t') || 0), goal = story, started = STILL || qs.has('go'), ended = false, time = 0, scale = +(qs.get('s') || 0.55), ft = 16, last = performance.now();
+let story = +(qs.get('t') || 0), goal = story, started = STILL || qs.has('go'), ended = false, time = 0, scale = +(qs.get('s') || (LITE ? 0.26 : 0.4)), ft = 16, rawFt = 16, last = performance.now();
 GATES.forEach((g) => { if (g.s < story - 0.5) g.done = true; }); // 从中途进入（?t=）时，之前的关口视为已完成
 let visitSaved = false, mouse = [0, 0], look = [0, 0], jinA = 0, jinOpen = 0, jinP = null, fadeHold = 0;
 function actAt(s) { let i = 0; while (i < ACTS.length - 1 && ACTS[i + 1].s <= s) i++; return i; }
@@ -266,13 +274,16 @@ function showEnd(lost) { if (ended) return; ended = true; const e = $('end'); e.
   setTimeout(() => { $('tag').style.opacity = 1; pluck(146.8, 0.3); pluck(220, 0.2, 0.8); }, 1500 + LINES.length * 2200 + 600); setTimeout(() => ($('again').style.opacity = 1), 1500 + LINES.length * 2200 + 2500); }
 // ---------- 渲染 ----------
 const vsub = (a, b) => a.map((v, i) => v - b[i]), vnorm = (a) => { const n = Math.hypot(...a); return a.map((v) => v / n); }, vcross = (a, b) => [a[1] * b[2] - a[2] * b[1], a[2] * b[0] - a[0] * b[2], a[0] * b[1] - a[1] * b[0]], vdot = (a, b) => a[0] * b[0] + a[1] * b[1] + a[2] * b[2];
-let curLine = '', curAct = '';
+let curLine = '', curAct = '', frameN = 0;
 if ((STILL && !qs.has('title')) || (!STILL && qs.has('go'))) { document.body.classList.add('started'); $('title').style.display = 'none'; }
 if (!STILL && qs.has('go')) { const ua = () => { audioInit(); ['pointerdown', 'keydown', 'touchstart'].forEach((ev) => removeEventListener(ev, ua)); }; ['pointerdown', 'keydown', 'touchstart'].forEach((ev) => addEventListener(ev, ua, { passive: true })); }
 const BENCH = [];
 function frame(now) { const fstart = performance.now();
-  const dt = Math.max(0, Math.min(0.05, (now - last) / 1000)); last = Math.max(last, now); ft = ft * 0.92 + dt * 1000 * 0.08; time += STILL ? 0 : dt; if (STILL) time = +(qs.get('time') || story);
-  if (!STILL && !qs.has('s')) { if (ft > 38 && scale > 0.32) scale -= 0.01; else if (ft < 22 && scale < 0.9) scale += 0.004; }
+  const raw = Math.max(0, now - last), dt = Math.min(0.05, raw / 1000); last = Math.max(last, now); rawFt = rawFt * 0.8 + Math.min(raw, 4000) * 0.2; ft = ft * 0.92 + dt * 1000 * 0.08; time += STILL ? 0 : dt; if (STILL) time = +(qs.get('time') || story);
+  // 自适应分辨率：按真实帧时长调（之前用的是截断到 50ms 的时长，慢设备上降得太慢，会触发显卡超时而黑屏）
+  if (!STILL && !qs.has('s')) { const lo = LITE ? 0.16 : 0.2, hi = LITE ? 0.5 : 0.9;
+    if (rawFt > 90) scale = Math.max(lo, scale * 0.8); else if (rawFt > 40) scale = Math.max(lo, scale - 0.01); else if (rawFt < 22 && scale < hi) scale += 0.003; }
+  if (qs.has('fps') && (frameN++ % 15 === 0)) $('act').textContent = Math.round(1000 / rawFt) + 'fps ×' + scale.toFixed(2);
   if (started && !ended && !STILL) {
     // 第四幕：初极狭——按住才往前走
     const dark = actAt(story) === 3 && story < S[3] + 27; const rate = dark ? (holding ? 1.25 : 0.1) : 1;
