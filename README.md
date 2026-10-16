@@ -9,3 +9,5 @@
 - 毛笔逐笔书写所用的笔顺与字形轮廓来自 [Make Me a Hanzi](https://github.com/skishore/makemeahanzi) 的 graphics.txt，
   其源自文鼎科技的 Arphic PL KaitiM GB 与 Arphic PL UKai 字体。网页中内嵌了其中用到的字（经坐标量化压缩），
   这部分数据按 Arphic Public License 发布与再分发，许可证全文见 [ARPHICPL.TXT](ARPHICPL.TXT)。
+- 片头童声与「津」的几句话由开源语音模型 [VoxCPM2](https://github.com/OpenBMB/VoxCPM)（OpenBMB，Apache-2.0）合成，
+  音色由文字描述生成，未克隆任何真人的声音。
