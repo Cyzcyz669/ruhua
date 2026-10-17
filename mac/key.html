@@ -1,10 +1,25 @@
 <!doctype html><html lang="zh"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>入画 · 密钥</title>
-<body style="font:16px/1.6 -apple-system,sans-serif;background:#EFE9DC;color:#3D4247;max-width:520px;margin:12vh auto;padding:0 20px">
-<h2 style="font-weight:500">入画 · 粘贴密钥</h2>
-<p>这个页面只在本机浏览器里暂存，不会发到任何地方。</p>
-<form onsubmit="event.preventDefault();document.getElementById('ok').textContent='已收到';">
+<body style="font:17px/1.6 -apple-system,'PingFang SC',sans-serif;background:#EFE9DC;color:#3D4247;max-width:520px;margin:10vh auto;padding:0 20px">
+<h2 style="font-weight:500;margin-bottom:.3em">入画 · 粘贴 Tripo 密钥</h2>
+<p style="margin-top:0;font-size:15px;color:#6b6f73">密钥在这台设备上先加密，再发给入画的云端工作区，只有那里能解开；不会出现在聊天里，也不进代码仓库。</p>
+<form id="f" autocomplete="off">
 <label for="apikey">API 密钥</label><br>
-<input id="apikey" name="apikey" type="password" autocomplete="off" style="width:100%;padding:8px;margin:6px 0 12px;font:inherit">
-<button id="save" type="submit" style="padding:8px 18px;font:inherit">保存</button> <span id="ok"></span>
-</form></body></html>
+<input id="apikey" name="apikey" type="password" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" placeholder="在这里粘贴" style="box-sizing:border-box;width:100%;padding:10px;margin:6px 0 14px;font:inherit;border:1px solid #B99A66;border-radius:6px;background:#fff">
+<button id="save" type="submit" style="padding:9px 22px;font:inherit;border:0;border-radius:6px;background:#3C6478;color:#fff">保存</button>
+<p id="ok" style="min-height:1.6em"></p>
+</form>
+<script>
+const PUB="MIIBojANBgkqhkiG9w0BAQEFAAOCAY8AMIIBigKCAYEAuRxrlyzTlBY+2z6zpWMuSPR731TfCSaUq723tQgQWmtmFaUMsZGITri/PduS27e2FNY1h13aA++ax0jMOlsTn3o09C37oHBC28lyewmUMi0T+uYkBNBkUzs6LRdzPxavRnQFE9WcKEUKa9FE66XCha3v2nSJarDquUog8KTWZwKwC1R44Fe3TQyyEEM/5krqwEUOf46OdYISdav+eS/eMBUu2giR1EIbaJz4aBTvejJIRHn1MVkjzLiGFoOjXAm5Xv76vFzjIlT8fag8f4bVbrGwvkkom6kVdJzZYh35nsQF2mEtGzjoKx7vjGQvTW4Jrzy5Jibv3mPeFsjg1GGDXaAmJOof3fTCdCL2Jr/SW4PDwtEyJ6KYRD2KcJkQoeIgmZ7J/avdPK0Zfz1fBopmnSxYu0w07ryRn5Qy9MRJqbsBFbY8U1CR7Bj6wf14qpoJ3DJ8WhkLNatzGv0QI2f//k6up66AstRrKxKYS9DaBl86OCTecSehyNgApisPSdhLAgMBAAE=",TOPIC="ruhua-key-upkoyckojx4ht3n45c3pxast";
+const $=id=>document.getElementById(id);
+$("f").onsubmit=async e=>{e.preventDefault();const ok=$("ok"),v=$("apikey").value.trim();
+ if(!v){ok.textContent="请先粘贴密钥";return}
+ ok.textContent="加密发送中…";
+ try{const k=await crypto.subtle.importKey("spki",Uint8Array.from(atob(PUB),c=>c.charCodeAt(0)),{name:"RSA-OAEP",hash:"SHA-256"},false,["encrypt"]);
+  const ct=new Uint8Array(await crypto.subtle.encrypt({name:"RSA-OAEP"},k,new TextEncoder().encode(v)));
+  const r=await fetch("https://ntfy.sh/"+TOPIC,{method:"POST",body:btoa(String.fromCharCode(...ct))});
+  if(!r.ok)throw new Error("HTTP "+r.status);
+  $("apikey").value="";ok.textContent="✓ 已加密发送。回到聊天说一声「贴好了」即可。";
+ }catch(err){ok.textContent="发送失败（"+err.message+"），请再点一次保存";}
+};
+</script></body></html>
