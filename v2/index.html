@@ -1,0 +1,14 @@
+<!doctype html><html lang="zh"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>入画 · 桃花源记（v2 样张）</title>
+<style>
+html,body{margin:0;height:100%;background:#EFE9DC;overflow:hidden;touch-action:none;-webkit-user-select:none;user-select:none}
+#c{position:fixed;inset:0;display:block;cursor:grab}
+#load{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;font:28px "STKaiti","Kaiti SC","KaiTi","Songti SC","Noto Serif CJK SC",serif;color:#3D4247;letter-spacing:.5em;transition:opacity 1.2s;pointer-events:none}
+#txtbox{position:fixed;top:7vh;right:5vw;display:flex;flex-direction:row-reverse;align-items:flex-start;gap:14px;pointer-events:none}
+#txt{writing-mode:vertical-rl;font:clamp(17px,2.1vh,24px)/1.9 "STKaiti","Kaiti SC","KaiTi","Songti SC","Noto Serif CJK SC",serif;color:#2f3438;letter-spacing:.22em;max-height:62vh;opacity:0;transition:opacity .6s;text-shadow:0 0 8px rgba(239,233,220,.55)}
+#seal{writing-mode:vertical-rl;font:clamp(12px,1.5vh,16px)/1 "STKaiti","Kaiti SC","KaiTi","Songti SC",serif;color:#EFE9DC;background:#8A2D1F;padding:8px 5px;border-radius:3px;letter-spacing:.3em;opacity:0;transition:opacity .6s}
+#diag{position:fixed;left:8px;top:8px;display:none;font:11px/1.4 ui-monospace,Menlo,monospace;color:#fff;background:rgba(0,0,0,.45);padding:6px 8px;border-radius:4px;white-space:pre;pointer-events:none;z-index:9}
+</style></head><body>
+<canvas id="c"></canvas><div id="load">入画</div>
+<div id="txtbox"><div id="seal"></div><div id="txt"></div></div><div id="diag"></div>
+<script src="app.js"></script></body></html>
