@@ -15,8 +15,28 @@ body.dark #txt{color:#EFE9DC;text-shadow:0 0 8px rgba(0,0,0,.7)}
 #again span{display:block;writing-mode:vertical-rl;font:clamp(14px,1.8vh,18px)/1 "STKaiti","Kaiti SC","KaiTi","Songti SC","Noto Serif CJK SC",serif;letter-spacing:.25em;margin-bottom:-.25em}
 #again::before{content:"";position:absolute;inset:-12px}#again:hover{filter:brightness(1.08)}#again:active{transform:scale(.96)}#again:focus-visible{outline:2px solid #2f3438;outline-offset:3px}
 #diag{position:fixed;left:8px;top:8px;display:none;font:11px/1.4 ui-monospace,Menlo,monospace;color:#fff;background:rgba(0,0,0,.45);padding:6px 8px;border-radius:4px;white-space:pre;pointer-events:none;z-index:9}
+#gate{position:fixed;inset:0;z-index:8;display:none;cursor:pointer;overflow:hidden;-webkit-tap-highlight-color:transparent;outline:none}
+body.gated #gate{display:block}
+#gpaper{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:radial-gradient(ellipse at 50% 42%,#F7F2E6 0%,#EFE9DC 55%,#E4DCC9 100%);-webkit-clip-path:inset(0 0 0 0);clip-path:inset(0 0 0 0);transition:clip-path 2.3s cubic-bezier(.62,.02,.3,1),-webkit-clip-path 2.3s cubic-bezier(.62,.02,.3,1)}
+#gate.open #gpaper{-webkit-clip-path:inset(0 100% 0 0);clip-path:inset(0 100% 0 0)}
+#grod{position:absolute;top:-2vh;bottom:-2vh;right:-14px;width:14px;border-radius:7px;background:linear-gradient(90deg,#4a2e1e,#8a5a3a 45%,#3e271a);box-shadow:-2px 0 10px rgba(40,25,10,.28);transition:transform 2.3s cubic-bezier(.62,.02,.3,1)}
+#gate.open #grod{transform:translateX(calc(-100vw - 14px))}
+#gtag{display:flex;flex-direction:row-reverse;align-items:flex-end;gap:clamp(10px,1.8vh,20px);margin-top:-10vh}
+#gttl{writing-mode:vertical-rl;font:clamp(18px,5.6vh,60px)/1 "STKaiti","Kaiti SC","KaiTi","Songti SC","Noto Serif CJK SC",serif;color:#2f3438;letter-spacing:.32em;margin-bottom:-.32em;animation:gin 2.2s ease-out both}
+#gttl i{font-style:normal;color:#8A2D1F;letter-spacing:0;margin:.18em 0 .5em}
+#gseal{writing-mode:vertical-rl;margin-bottom:.2em;font:clamp(11px,1.7vh,18px)/1 "STKaiti","Kaiti SC","KaiTi","Songti SC",serif;color:#F5F0E3;background:#8A2D1F;padding:8px 5px;border-radius:3px;letter-spacing:.3em;animation:gin 2.2s .5s ease-out both}
+#gtx{position:absolute;left:0;right:0;bottom:calc(9vh + env(safe-area-inset-bottom));text-align:center;font:clamp(13px,2vh,20px)/1.9 "STKaiti","Kaiti SC","KaiTi","Songti SC","Noto Serif CJK SC",serif;color:#3D4247;letter-spacing:.42em;transition:opacity .6s}
+#gtx b{display:block;font-weight:normal;animation:gpulse 2.6s 1.2s ease-in-out infinite both}
+#gtx small{display:block;font-size:.72em;letter-spacing:.24em;opacity:.55}
+#gate.open #gtx,#gate.ask #gtx{opacity:0}
+#gq{position:absolute;left:0;right:0;bottom:calc(9vh + env(safe-area-inset-bottom) + .4em);text-align:center;font:clamp(14px,2.3vh,23px)/1.9 "STKaiti","Kaiti SC","KaiTi","Songti SC","Noto Serif CJK SC",serif;color:#2f3438;letter-spacing:.28em;pointer-events:none}
+#gq span{opacity:0;transition:opacity .4s}
+#gate.ask #gq span{opacity:1}
+@keyframes gin{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+@keyframes gpulse{0%,100%{opacity:.4}50%{opacity:1}}
 </style></head><body>
 <canvas id="c"></canvas><div id="load">入画</div>
 <div id="txtbox"><div id="seal"></div><div id="txt"></div></div><div id="diag"></div>
 <div id="end" aria-hidden="true"><div id="endtxt">有些地方，<br>只能偶然遇见。</div><button id="again" type="button" aria-label="重看"><span>重看</span></button></div>
+<div id="gate" role="button" tabindex="0" aria-label="轻触展卷"><div id="gpaper"><div id="gtag"><div id="gttl">入画<i>·</i>桃花源记</div><div id="gseal">问津</div></div><div id="gq" aria-hidden="true"></div><div id="gtx"><b>轻触 · 展卷</b><small>戴上耳机，听溪声与人声</small></div></div><div id="grod"></div></div>
 <script src="app.js"></script></body></html>
