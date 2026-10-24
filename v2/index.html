@@ -3,19 +3,19 @@
 <style>
 html,body{margin:0;height:100%;background:#EFE9DC;overflow:hidden;touch-action:none;-webkit-user-select:none;user-select:none}
 #c{position:fixed;inset:0;display:block;cursor:grab}
-#load{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;font:28px "STKaiti","Kaiti SC","KaiTi","Songti SC","Noto Serif CJK SC",serif;color:#3D4247;letter-spacing:.5em;transition:opacity 1.2s;pointer-events:none}
+#load{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;font:28px "RuhuaBrush","STKaiti","Kaiti SC","KaiTi","Songti SC","Noto Serif CJK SC",serif;color:#3D4247;letter-spacing:.5em;transition:opacity 1.2s;pointer-events:none}
 #txtbox{position:fixed;top:7vh;right:5vw;display:flex;flex-direction:row-reverse;align-items:flex-start;gap:14px;pointer-events:none}
-#txt{writing-mode:vertical-rl;font:clamp(17px,2.1vh,24px)/1.9 "STKaiti","Kaiti SC","KaiTi","Songti SC","Noto Serif CJK SC",serif;color:#2f3438;letter-spacing:.22em;max-height:62vh;opacity:0;transition:opacity .6s;text-shadow:0 0 8px rgba(239,233,220,.55)}
+#txt{writing-mode:vertical-rl;font:clamp(17px,2.1vh,24px)/1.9 "RuhuaBrush","STKaiti","Kaiti SC","KaiTi","Songti SC","Noto Serif CJK SC",serif;color:#2f3438;letter-spacing:.22em;max-height:62vh;opacity:0;transition:opacity .6s;text-shadow:0 0 8px rgba(239,233,220,.55)}
 body.dark #txt{color:#EFE9DC;text-shadow:0 0 8px rgba(0,0,0,.7)}
-#seal{writing-mode:vertical-rl;font:clamp(12px,1.5vh,16px)/1 "STKaiti","Kaiti SC","KaiTi","Songti SC",serif;color:#EFE9DC;background:#8A2D1F;padding:8px 5px;border-radius:3px;letter-spacing:.3em;opacity:0;transition:opacity .6s}
+#seal{writing-mode:vertical-rl;font:clamp(12px,1.5vh,16px)/1 "RuhuaBrush","STKaiti","Kaiti SC","KaiTi","Songti SC",serif;color:#EFE9DC;background:#8A2D1F;padding:8px 5px;border-radius:3px;letter-spacing:.3em;opacity:0;transition:opacity .6s}
 #end{position:fixed;inset:0;display:flex;flex-direction:row-reverse;align-items:center;justify-content:center;gap:clamp(18px,3vw,34px);background:#F5F0E3;opacity:0;visibility:hidden;transition:opacity 1.2s,visibility 0s 1.2s;z-index:5}
 #end.on{opacity:1;visibility:visible;transition:opacity 1.2s}
-#endtxt{writing-mode:vertical-rl;font:clamp(24px,3.4vh,36px)/1 "STKaiti","Kaiti SC","KaiTi","Songti SC","Noto Serif CJK SC",serif;color:#2f3438;letter-spacing:.5em;margin-bottom:-.5em}
+#endtxt{writing-mode:vertical-rl;font:clamp(24px,3.4vh,36px)/1 "RuhuaBrush","STKaiti","Kaiti SC","KaiTi","Songti SC","Noto Serif CJK SC",serif;color:#2f3438;letter-spacing:.5em;margin-bottom:-.5em}
 #again{position:relative;align-self:center;margin-top:clamp(70px,11vh,120px);padding:9px 7px;border:0;border-radius:3px;background:#8A2D1F;color:#EFE9DC;cursor:pointer;-webkit-tap-highlight-color:transparent;transition:transform .15s,filter .15s}
-#again span{display:block;writing-mode:vertical-rl;font:clamp(14px,1.8vh,18px)/1 "STKaiti","Kaiti SC","KaiTi","Songti SC","Noto Serif CJK SC",serif;letter-spacing:.25em;margin-bottom:-.25em}
+#again span{display:block;writing-mode:vertical-rl;font:clamp(14px,1.8vh,18px)/1 "RuhuaBrush","STKaiti","Kaiti SC","KaiTi","Songti SC","Noto Serif CJK SC",serif;letter-spacing:.25em;margin-bottom:-.25em}
 #again::before{content:"";position:absolute;inset:-12px}#again:hover{filter:brightness(1.08)}#again:active{transform:scale(.96)}#again:focus-visible{outline:2px solid #2f3438;outline-offset:3px}
 #etoc{position:relative;align-self:center;margin-top:clamp(70px,11vh,120px);padding:8px 6px;border:1px solid rgba(138,45,31,.55);border-radius:3px;background:transparent;color:#8A2D1F;cursor:pointer;-webkit-tap-highlight-color:transparent;transition:transform .15s}
-#etoc span{display:block;writing-mode:vertical-rl;font:clamp(14px,1.8vh,18px)/1 "STKaiti","Kaiti SC","KaiTi","Songti SC","Noto Serif CJK SC",serif;letter-spacing:.25em;margin-bottom:-.25em}
+#etoc span{display:block;writing-mode:vertical-rl;font:clamp(14px,1.8vh,18px)/1 "RuhuaBrush","STKaiti","Kaiti SC","KaiTi","Songti SC","Noto Serif CJK SC",serif;letter-spacing:.25em;margin-bottom:-.25em}
 #etoc::before{content:"";position:absolute;inset:-8px}#etoc:active{transform:scale(.96)}#etoc:focus-visible{outline:2px solid #2f3438;outline-offset:3px}
 #diag{position:fixed;left:8px;top:8px;display:none;font:11px/1.4 ui-monospace,Menlo,monospace;color:#fff;background:rgba(0,0,0,.45);padding:6px 8px;border-radius:4px;white-space:pre;pointer-events:none;z-index:9}
 #gate{position:fixed;inset:0;z-index:8;display:none;cursor:pointer;overflow:hidden;-webkit-tap-highlight-color:transparent;outline:none}
@@ -25,27 +25,27 @@ body.gated #gate{display:block}
 #grod{position:absolute;top:-2vh;bottom:-2vh;right:-14px;width:14px;border-radius:7px;background:linear-gradient(90deg,#4a2e1e,#8a5a3a 45%,#3e271a);box-shadow:-2px 0 10px rgba(40,25,10,.28);transition:transform 2.3s cubic-bezier(.62,.02,.3,1)}
 #gate.open #grod{transform:translateX(calc(-100vw - 14px))}
 #gtag{display:flex;flex-direction:row-reverse;align-items:flex-end;gap:clamp(10px,1.8vh,20px);margin-top:-10vh}
-#gttl{writing-mode:vertical-rl;font:clamp(18px,5.6vh,60px)/1 "STKaiti","Kaiti SC","KaiTi","Songti SC","Noto Serif CJK SC",serif;color:#2f3438;letter-spacing:.32em;margin-bottom:-.32em;animation:gin 2.2s ease-out both}
+#gttl{writing-mode:vertical-rl;font:clamp(18px,5.6vh,60px)/1 "RuhuaBrush","STKaiti","Kaiti SC","KaiTi","Songti SC","Noto Serif CJK SC",serif;color:#2f3438;letter-spacing:.32em;margin-bottom:-.32em;animation:gin 2.2s ease-out both}
 #gttl i{font-style:normal;color:#8A2D1F;letter-spacing:0;margin:.18em 0 .5em}
-#gseal{writing-mode:vertical-rl;margin-bottom:.2em;font:clamp(11px,1.7vh,18px)/1 "STKaiti","Kaiti SC","KaiTi","Songti SC",serif;color:#F5F0E3;background:#8A2D1F;padding:8px 5px;border-radius:3px;letter-spacing:.3em;animation:gin 2.2s .5s ease-out both}
-#gtx{position:absolute;left:0;right:0;bottom:calc(9vh + env(safe-area-inset-bottom));text-align:center;font:clamp(13px,2vh,20px)/1.9 "STKaiti","Kaiti SC","KaiTi","Songti SC","Noto Serif CJK SC",serif;color:#3D4247;letter-spacing:.42em;transition:opacity .6s}
+#gseal{writing-mode:vertical-rl;margin-bottom:.2em;font:clamp(11px,1.7vh,18px)/1 "RuhuaBrush","STKaiti","Kaiti SC","KaiTi","Songti SC",serif;color:#F5F0E3;background:#8A2D1F;padding:8px 5px;border-radius:3px;letter-spacing:.3em;animation:gin 2.2s .5s ease-out both}
+#gtx{position:absolute;left:0;right:0;bottom:calc(9vh + env(safe-area-inset-bottom));text-align:center;font:clamp(13px,2vh,20px)/1.9 "RuhuaBrush","STKaiti","Kaiti SC","KaiTi","Songti SC","Noto Serif CJK SC",serif;color:#3D4247;letter-spacing:.42em;transition:opacity .6s}
 #gtx b{display:block;font-weight:normal;animation:gpulse 2.6s 1.2s ease-in-out infinite both}
 #gtx small{display:block;font-size:.72em;letter-spacing:.24em;opacity:.55}
 #gate.open #gtx,#gate.ask #gtx{opacity:0}
-#gq{position:absolute;left:0;right:0;bottom:calc(9vh + env(safe-area-inset-bottom) + .4em);text-align:center;font:clamp(14px,2.3vh,23px)/1.9 "STKaiti","Kaiti SC","KaiTi","Songti SC","Noto Serif CJK SC",serif;color:#2f3438;letter-spacing:.28em;pointer-events:none}
+#gq{position:absolute;left:0;right:0;bottom:calc(9vh + env(safe-area-inset-bottom) + .4em);text-align:center;font:clamp(14px,2.3vh,23px)/1.9 "RuhuaBrush","STKaiti","Kaiti SC","KaiTi","Songti SC","Noto Serif CJK SC",serif;color:#2f3438;letter-spacing:.28em;pointer-events:none}
 #gq span{opacity:0;transition:opacity .4s}
 #gate.ask #gq span{opacity:1}
 #gtoc{position:absolute;left:calc(5vw + env(safe-area-inset-left));bottom:calc(9vh + env(safe-area-inset-bottom));padding:8px 5px;border:1px solid rgba(138,45,31,.55);border-radius:3px;background:transparent;color:#8A2D1F;cursor:pointer;-webkit-tap-highlight-color:transparent;transition:opacity .5s;animation:gin 2.2s 1.2s ease-out both}
-#gtoc span{display:block;writing-mode:vertical-rl;font:clamp(12px,1.7vh,17px)/1 "STKaiti","Kaiti SC","KaiTi","Songti SC","Noto Serif CJK SC",serif;letter-spacing:.3em;margin-bottom:-.3em}
+#gtoc span{display:block;writing-mode:vertical-rl;font:clamp(12px,1.7vh,17px)/1 "RuhuaBrush","STKaiti","Kaiti SC","KaiTi","Songti SC","Noto Serif CJK SC",serif;letter-spacing:.3em;margin-bottom:-.3em}
 #gtoc::before{content:"";position:absolute;inset:-12px}#gtoc:active{transform:scale(.96)}#gtoc:focus-visible,.gm:focus-visible{outline:2px solid #2f3438;outline-offset:3px}
 #gmenu{position:absolute;inset:0;box-sizing:border-box;display:flex;flex-direction:row-reverse;align-items:flex-start;justify-content:center;gap:clamp(4px,2vw,28px);padding-top:calc(43vh - clamp(70px,13vh,150px));opacity:0;visibility:hidden;pointer-events:none;transition:opacity .5s,visibility 0s .5s}
 #gate.toc #gmenu{opacity:1;visibility:visible;pointer-events:auto;transition:opacity .5s}
-#gmh{writing-mode:vertical-rl;margin:10px clamp(4px,1.6vw,22px) 0 clamp(2px,1vw,12px);font:clamp(11px,1.7vh,18px)/1 "STKaiti","Kaiti SC","KaiTi","Songti SC","Noto Serif CJK SC",serif;color:#F5F0E3;background:#8A2D1F;padding:8px 5px;border-radius:3px;letter-spacing:.3em}
+#gmh{writing-mode:vertical-rl;margin:10px clamp(4px,1.6vw,22px) 0 clamp(2px,1vw,12px);font:clamp(11px,1.7vh,18px)/1 "RuhuaBrush","STKaiti","Kaiti SC","KaiTi","Songti SC","Noto Serif CJK SC",serif;color:#F5F0E3;background:#8A2D1F;padding:8px 5px;border-radius:3px;letter-spacing:.3em}
 .gm{position:relative;border:0;background:transparent;padding:10px 5px;color:#2f3438;cursor:pointer;-webkit-tap-highlight-color:transparent;transition:transform .15s,color .2s}
-.gm span{display:block;writing-mode:vertical-rl;font:clamp(15px,min(2.7vh,5vw),28px)/1.15 "STKaiti","Kaiti SC","KaiTi","Songti SC","Noto Serif CJK SC",serif;letter-spacing:.32em}
+.gm span{display:block;writing-mode:vertical-rl;font:clamp(15px,min(2.7vh,5vw),28px)/1.15 "RuhuaBrush","STKaiti","Kaiti SC","KaiTi","Songti SC","Noto Serif CJK SC",serif;letter-spacing:.32em}
 .gm i{font-style:normal;color:#8A2D1F;font-size:.6em;margin-bottom:.7em}
 .gm:hover{color:#8A2D1F}.gm:active{transform:scale(.95)}
-#gmx{position:absolute;left:0;right:0;bottom:calc(9vh + env(safe-area-inset-bottom));text-align:center;font:clamp(11px,1.5vh,15px)/1.9 "STKaiti","Kaiti SC","KaiTi","Songti SC","Noto Serif CJK SC",serif;color:#3D4247;letter-spacing:.24em;opacity:0;transition:opacity .5s;pointer-events:none}
+#gmx{position:absolute;left:0;right:0;bottom:calc(9vh + env(safe-area-inset-bottom));text-align:center;font:clamp(11px,1.5vh,15px)/1.9 "RuhuaBrush","STKaiti","Kaiti SC","KaiTi","Songti SC","Noto Serif CJK SC",serif;color:#3D4247;letter-spacing:.24em;opacity:0;transition:opacity .5s;pointer-events:none}
 #gate.toc #gmx{opacity:.6}
 #gate.toc #gtag,#gate.toc #gtx{opacity:0;pointer-events:none}
 #gate.toc #gtoc,#gate.ask #gtoc,#gate.wait #gtoc,#gate.open #gtoc{visibility:hidden;pointer-events:none}
